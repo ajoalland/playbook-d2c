@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Playbook Consultation D2C — Projet Fin d'Études</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal: #1a7a7a;
+  --teal-light: #e8f4f4;
+  --teal-mid: #b8dede;
+  --teal-dark: #0d5252;
+  --cream: #faf8f5;
+  --warm-gray: #f2efeb;
+  --charcoal: #2a2a2a;
+  --soft-black: #1a1a1a;
+  --accent-blush: #e8c4b8;
+  --accent-sage: #c5d5c5;
+  --text-body: #3d3d3d;
+  --text-muted: #7a7a7a;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'DM Sans', system-ui, sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+}
+
+body {
+  font-family: var(--sans);
+  color: var(--charcoal);
+  background: var(--cream);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── NAVIGATION ── */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.4s, backdrop-filter 0.4s;
+}
+
+nav.scrolled {
+  background: rgba(250, 248, 245, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(26, 122, 122, 0.1);
+}
+
+nav .logo {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--teal-dark);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+nav .nav-links {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+}
+
+nav .nav-links a {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  transition: color 0.3s;
+  position: relative;
+}
+
+nav .nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: var(--teal);
+  transition: width 0.3s;
+}
+
+nav .nav-links a:hover { color: var(--teal); }
+nav .nav-links a:hover::after { width: 100%; }
+
+/* ── SECTIONS ── */
+section {
+  min-height: 100vh;
+  scroll-snap-align: start;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 60px;
+}
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(160deg, var(--cream) 0%, var(--teal-light) 40%, var(--teal-mid) 100%);
+  flex-direction: column;
+  text-align: center;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(26,122,122,0.08) 0%, transparent 70%);
+  animation: float 8s ease-in-out infinite;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -10%;
+  left: -5%;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,196,184,0.15) 0%, transparent 70%);
+  animation: float 10s ease-in-out infinite reverse;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(20px, -30px); }
+}
+
+.hero-badge {
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--teal);
+  background: rgba(255,255,255,0.6);
+  padding: 8px 24px;
+  border-radius: 30px;
+  margin-bottom: 40px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.3s forwards;
+}
+
+.hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(2.8rem, 6vw, 5.5rem);
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--soft-black);
+  max-width: 900px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.5s forwards;
+}
+
+.hero h1 em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--teal);
+}
+
+.hero-sub {
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-top: 30px;
+  max-width: 550px;
+  line-height: 1.7;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.7s forwards;
+}
+
+.hero-authors {
+  margin-top: 50px;
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.9s forwards;
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 1.2s forwards;
+}
+
+.hero-scroll span {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.hero-scroll .line {
+  width: 1px;
+  height: 40px;
+  background: var(--teal);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
+  50% { opacity: 1; transform: scaleY(1); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── CONTENT SECTIONS ── */
+.split-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.section-label {
+  font-family: var(--sans);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 16px;
+}
+
+.section-number {
+  font-family: var(--serif);
+  font-size: 6rem;
+  font-weight: 300;
+  color: var(--teal-mid);
+  line-height: 1;
+  margin-bottom: 10px;
+  opacity: 0.5;
+}
+
+.section-title {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 400;
+  color: var(--soft-black);
+  line-height: 1.15;
+  margin-bottom: 24px;
+}
+
+.section-body {
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--text-body);
+}
+
+.section-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── CONTEXTE ── */
+.contexte-card {
+  background: linear-gradient(135deg, var(--teal-light) 0%, white 100%);
+  border-radius: 24px;
+  padding: 50px;
+  position: relative;
+  overflow: hidden;
+}
+
+.contexte-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(26,122,122,0.1) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.question-block {
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  font-style: italic;
+  color: var(--teal-dark);
+  line-height: 1.5;
+  padding: 30px;
+  border-left: 3px solid var(--teal);
+  margin-top: 30px;
+  background: rgba(255,255,255,0.5);
+  border-radius: 0 12px 12px 0;
+}
+
+/* ── TIMELINE ── */
+.timeline-section {
+  background: var(--soft-black);
+  color: white;
+}
+
+.timeline-section .section-label { color: var(--teal-mid); }
+.timeline-section .section-title { color: white; }
+.timeline-section .section-body { color: rgba(255,255,255,0.7); }
+
+.timeline-visual {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+}
+
+.timeline-visual::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--teal), var(--teal-mid), var(--accent-blush));
+}
+
+.phase-card {
+  padding: 30px 30px 30px 60px;
+  position: relative;
+  transition: transform 0.3s;
+}
+
+.phase-card:hover { transform: translateX(8px); }
+
+.phase-card::before {
+  content: '';
+  position: absolute;
+  left: 12px;
+  top: 38px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--soft-black);
+  border: 3px solid var(--teal);
+  z-index: 1;
+}
+
+.phase-card:nth-child(2)::before { border-color: var(--teal-mid); }
+.phase-card:nth-child(3)::before { border-color: var(--accent-blush); }
+
+.phase-label {
+  font-family: var(--sans);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--teal-mid);
+  margin-bottom: 6px;
+}
+
+.phase-name {
+  font-family: var(--serif);
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: white;
+  margin-bottom: 12px;
+}
+
+.phase-details {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.8;
+}
+
+/* ── ENJEUX ── */
+.enjeux-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  max-width: 1100px;
+  width: 100%;
+}
+
+.enjeu-card {
+  background: white;
+  border-radius: 20px;
+  padding: 36px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+  border: 1px solid rgba(26,122,122,0.08);
+}
+
+.enjeu-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(26,122,122,0.1);
+}
+
+.enjeu-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--teal);
+  transform: scaleX(0);
+  transition: transform 0.4s;
+  transform-origin: left;
+}
+
+.enjeu-card:hover::before { transform: scaleX(1); }
+
+.enjeu-card:nth-child(2)::before { background: var(--teal-mid); }
+.enjeu-card:nth-child(3)::before { background: var(--accent-blush); }
+.enjeu-card:nth-child(4)::before { background: var(--accent-sage); }
+.enjeu-card:nth-child(5)::before { background: var(--teal-dark); }
+
+.enjeu-num {
+  font-family: var(--serif);
+  font-size: 3rem;
+  font-weight: 300;
+  color: var(--teal-mid);
+  opacity: 0.4;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.enjeu-title {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--soft-black);
+  margin-bottom: 14px;
+  line-height: 1.3;
+}
+
+.enjeu-body {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  line-height: 1.75;
+  color: var(--text-body);
+}
+
+.enjeux-section {
+  flex-direction: column;
+  gap: 40px;
+  padding-top: 120px;
+  padding-bottom: 120px;
+}
+
+.enjeux-section .section-header {
+  text-align: center;
+  max-width: 700px;
+}
+
+/* ── KEY LEARNINGS ── */
+.learnings-section {
+  background: linear-gradient(160deg, var(--teal-dark) 0%, var(--soft-black) 100%);
+  color: white;
+  flex-direction: column;
+  gap: 50px;
+  padding-top: 120px;
+  padding-bottom: 120px;
+}
+
+.learnings-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  max-width: 1100px;
+  width: 100%;
+}
+
+.learning-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 36px;
+  transition: background 0.3s, transform 0.3s;
+}
+
+.learning-card:hover {
+  background: rgba(255,255,255,0.1);
+  transform: translateY(-4px);
+}
+
+.learning-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: rgba(26,122,122,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  font-size: 1.3rem;
+}
+
+.learning-title {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: white;
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.learning-body {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.75;
+}
+
+/* ── RECOMMANDATIONS ── */
+.reco-section {
+  flex-direction: column;
+  gap: 50px;
+  padding-top: 120px;
+  padding-bottom: 120px;
+}
+
+.reco-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  max-width: 1100px;
+  width: 100%;
+}
+
+.reco-card {
+  background: white;
+  border-radius: 20px;
+  padding: 36px 28px;
+  text-align: center;
+  border: 1px solid rgba(26,122,122,0.06);
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.reco-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 64px rgba(26,122,122,0.12);
+}
+
+.reco-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+}
+
+.reco-card:nth-child(1) .reco-icon { background: var(--teal-light); }
+.reco-card:nth-child(2) .reco-icon { background: rgba(232,196,184,0.3); }
+.reco-card:nth-child(3) .reco-icon { background: rgba(197,213,197,0.4); }
+.reco-card:nth-child(4) .reco-icon { background: var(--teal-light); }
+
+.reco-title {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--soft-black);
+  margin-bottom: 14px;
+}
+
+.reco-body {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  color: var(--text-body);
+  line-height: 1.7;
+}
+
+/* ── PLAYBOOK GUIDE ── */
+.playbook-section {
+  background: var(--warm-gray);
+  flex-direction: column;
+  gap: 50px;
+  padding-top: 120px;
+  padding-bottom: 120px;
+}
+
+.playbook-steps {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+  max-width: 1100px;
+  width: 100%;
+}
+
+.step-card {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  position: relative;
+  transition: transform 0.3s;
+}
+
+.step-card:hover { transform: scale(1.02); }
+
+.step-num {
+  font-family: var(--serif);
+  font-size: 4rem;
+  font-weight: 300;
+  color: var(--teal);
+  opacity: 0.2;
+  position: absolute;
+  top: 20px;
+  right: 28px;
+  line-height: 1;
+}
+
+.step-title {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--soft-black);
+  margin-bottom: 14px;
+}
+
+.step-body {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  color: var(--text-body);
+  line-height: 1.75;
+}
+
+.step-tip {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: var(--teal-light);
+  border-radius: 10px;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  color: var(--teal-dark);
+  line-height: 1.6;
+}
+
+.step-tip strong { font-weight: 600; }
+
+/* ── FOOTER ── */
+.footer-section {
+  min-height: 50vh;
+  background: var(--soft-black);
+  color: white;
+  flex-direction: column;
+  text-align: center;
+  gap: 24px;
+}
+
+.footer-section .section-title {
+  color: white;
+  font-size: clamp(2rem, 3vw, 2.8rem);
+}
+
+.footer-section p {
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.5);
+  max-width: 500px;
+  line-height: 1.7;
+}
+
+.footer-credits {
+  margin-top: 30px;
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  section { padding: 80px 28px; }
+  .split-section { grid-template-columns: 1fr; gap: 40px; }
+  .enjeux-grid { grid-template-columns: 1fr; }
+  .learnings-grid { grid-template-columns: 1fr; }
+  .reco-grid { grid-template-columns: 1fr 1fr; }
+  .playbook-steps { grid-template-columns: 1fr; }
+  nav .nav-links { display: none; }
+}
+
+@media (max-width: 600px) {
+  .reco-grid { grid-template-columns: 1fr; }
+}
+
+/* ── INTERSECTION OBSERVER ANIMATIONS ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-5 { transition-delay: 0.5s; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="logo">Playbook D2C</div>
+  <ul class="nav-links">
+    <li><a href="#contexte">Contexte</a></li>
+    <li><a href="#timeline">Timeline</a></li>
+    <li><a href="#enjeux">Enjeux</a></li>
+    <li><a href="#learnings">Learnings</a></li>
+    <li><a href="#recos">Recommandations</a></li>
+    <li><a href="#guide">Guide</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-badge">Projet Fin d'Études · UQAM</div>
+  <h1>Playbook<br><em>Consultation D2C</em></h1>
+  <p class="hero-sub">
+    Consultation stratégique pour l'optimisation du canal de vente directe au consommateur dans l'industrie dermo-cosmétique. Un guide pensé pour les prochaines cohortes.
+  </p>
+  <div class="hero-authors">
+    Angélik Caron · Arthur Joalland · Camille René · Alexie-Emmanuelle Wolf
+  </div>
+  <div class="hero-scroll">
+    <span>Défiler</span>
+    <div class="line"></div>
+  </div>
+</section>
+
+<!-- NOTRE PROJET -->
+<section id="contexte">
+  <div class="split-section">
+    <div>
+      <div class="section-number reveal">01</div>
+      <div class="section-label reveal reveal-delay-1">Notre Projet</div>
+      <h2 class="section-title reveal reveal-delay-2">Contexte &<br>Problématique</h2>
+      <div class="section-body reveal reveal-delay-3">
+        <p>Dans le cadre de notre projet de fin d'études, nous avons mené une consultation stratégique pour une marque positionnée dans l'univers de la dermo-cosmétique — à la croisée du médical et de l'esthétique.</p>
+        <br>
+        <p>L'enjeu central : optimiser le canal de vente directe en ligne (D2C) d'un produit à forte crédibilité scientifique, tout en préservant son positionnement premium.</p>
+        <br>
+        <p>Notre objectif était triple : améliorer l'expérience client digitale, soutenir la performance commerciale, et renforcer la crédibilité de la marque dans un environnement omnicanal complexe.</p>
+      </div>
+    </div>
+    <div class="section-visual reveal reveal-delay-3">
+      <div class="contexte-card">
+        <div class="section-label">Problématique Centrale</div>
+        <div class="question-block">
+          Comment optimiser la vente directe en ligne tout en maintenant crédibilité scientifique et positionnement premium ?
+        </div>
+        <br>
+        <div style="font-family: var(--sans); font-size: 0.82rem; color: var(--text-muted); line-height: 1.7;">
+          <strong style="color: var(--teal-dark);">Offre :</strong> Produit à forte crédibilité scientifique<br>
+          <strong style="color: var(--teal-dark);">Objectif :</strong> Créer un pont entre expertise clinique et expérience digitale D2C<br>
+          <strong style="color: var(--teal-dark);">Cadre :</strong> Projet sous NDA — industrie dermo-cosmétique médico-esthétique
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="timeline-section" id="timeline">
+  <div class="split-section">
+    <div>
+      <div class="section-number reveal" style="color: rgba(255,255,255,0.1);">02</div>
+      <div class="section-label reveal reveal-delay-1">Déroulement</div>
+      <h2 class="section-title reveal reveal-delay-2">Timeline<br>du projet</h2>
+      <div class="section-body reveal reveal-delay-3">
+        <p>Le projet s'est déroulé en trois phases distinctes, chacune construisant sur les apprentissages de la précédente. Cette progression logique nous a permis de passer de la compréhension du marché à des recommandations concrètes, puis à un plan de déploiement sur trois ans.</p>
+      </div>
+    </div>
+    <div class="section-visual">
+      <div class="timeline-visual">
+        <div class="phase-card reveal">
+          <div class="phase-label">Phase 1 — Remise 1</div>
+          <div class="phase-name">Analyse</div>
+          <div class="phase-details">
+            Analyse marché & environnement concurrentiel · Collecte de données primaires et secondaires · Identification des enjeux spécifiques au D2C
+          </div>
+        </div>
+        <div class="phase-card reveal reveal-delay-1">
+          <div class="phase-label">Phase 2 — Remise 2</div>
+          <div class="phase-name">Optimisation</div>
+          <div class="phase-details">
+            Optimisation des 4P · Focus sur l'expérience utilisateur · Personnalisation de l'offre · Intégration de contenu éducatif
+          </div>
+        </div>
+        <div class="phase-card reveal reveal-delay-2">
+          <div class="phase-label">Phase 3 — Remise 3</div>
+          <div class="phase-name">Projection</div>
+          <div class="phase-details">
+            Plan stratégique sur 3 ans · Intégration technologique · Validation du budget et analyse de rentabilité
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ENJEUX -->
+<section class="enjeux-section" id="enjeux">
+  <div class="section-header">
+    <div class="section-number reveal" style="text-align:center;">03</div>
+    <div class="section-label reveal reveal-delay-1" style="text-align:center;">Défis Terrain</div>
+    <h2 class="section-title reveal reveal-delay-2" style="text-align:center;">Enjeux<br>rencontrés</h2>
+    <p class="section-body reveal reveal-delay-3" style="text-align:center; max-width: 600px;">Chaque projet de consultation comporte son lot de surprises. Voici les défis réels que nous avons affrontés — et que tout étudiant devrait anticiper.</p>
+  </div>
+  <div class="enjeux-grid">
+    <div class="enjeu-card reveal">
+      <div class="enjeu-num">01</div>
+      <div class="enjeu-title">Contraintes légales & NDA</div>
+      <div class="enjeu-body">Opérant sous entente de confidentialité, nous ne pouvions pas récolter de données ou de perceptions d'experts au nom de la marque directement. Nos recherches devaient porter sur l'industrie dermo-cosmétique au sens large — un exercice d'équilibriste entre pertinence et respect du cadre légal. Le risque de fausse représentation s'est avéré un enjeu majeur dans cette industrie entre monde médical et esthétique.</div>
+    </div>
+    <div class="enjeu-card reveal reveal-delay-1">
+      <div class="enjeu-num">02</div>
+      <div class="enjeu-title">Industrie ultra-spécialisée</div>
+      <div class="enjeu-body">Au cœur d'une industrie de niche, les données secondaires pertinentes étaient rares. Le recrutement d'experts qualifiés a été l'une des étapes les plus ardues — surtout pour trouver un expert légal capable de parler d'un sujet aussi précis que la réglementation du e-commerce dermo-cosmétique.</div>
+    </div>
+    <div class="enjeu-card reveal reveal-delay-2">
+      <div class="enjeu-num">03</div>
+      <div class="enjeu-title">Justification des recommandations</div>
+      <div class="enjeu-body">Proposer des modifications à une marque établie exige des preuves concrètes et chiffrées, appuyées par des experts. Notre questionnaire expert, axé sur les tendances du e-commerce, s'est avéré un atout primordial pour ancrer nos recommandations dans la réalité du marché.</div>
+    </div>
+    <div class="enjeu-card reveal reveal-delay-3">
+      <div class="enjeu-num">04</div>
+      <div class="enjeu-title">Cadrage stratégique</div>
+      <div class="enjeu-body">Face à une marque complexe et multi-canal, le risque de s'éparpiller était réel. Avoir une mission ultra-précise dès le départ — l'amélioration du canal D2C — nous a permis de maintenir le cap et de ne pas nous perdre dans les multiples facettes de la marque.</div>
+    </div>
+    <div class="enjeu-card reveal reveal-delay-4" style="grid-column: 1 / -1; max-width: 550px; justify-self: center;">
+      <div class="enjeu-num">05</div>
+      <div class="enjeu-title">Cohérence globale</div>
+      <div class="enjeu-body">Chaque section du travail devait être alignée avec les autres. Un manque de cohérence entre l'analyse, les recommandations et la projection financière aurait sapé toute la crédibilité du projet auprès du mandataire.</div>
+    </div>
+  </div>
+</section>
+
+<!-- KEY LEARNINGS -->
+<section class="learnings-section" id="learnings">
+  <div class="section-header" style="text-align:center;">
+    <div class="section-number reveal" style="color: rgba(255,255,255,0.1);">04</div>
+    <div class="section-label reveal reveal-delay-1" style="color: var(--teal-mid);">Apprentissages</div>
+    <h2 class="section-title reveal reveal-delay-2" style="color: white;">Key Learnings</h2>
+    <p class="section-body reveal reveal-delay-3" style="color: rgba(255,255,255,0.55); text-align:center; max-width: 600px;">Les leçons transversales tirées de notre expérience — applicables à tout projet de consultation étudiante.</p>
+  </div>
+  <div class="learnings-grid">
+    <div class="learning-card reveal">
+      <div class="learning-icon">🔍</div>
+      <div class="learning-title">Recruter ses experts tôt</div>
+      <div class="learning-body">Le recrutement de participants qualifiés prend du temps, surtout dans une industrie de niche. Commencez dès la phase 1 — et prévoyez un plan B. Les réseaux personnels et LinkedIn sont vos meilleurs alliés.</div>
+    </div>
+    <div class="learning-card reveal reveal-delay-1">
+      <div class="learning-icon">📊</div>
+      <div class="learning-title">Données primaires = crédibilité</div>
+      <div class="learning-body">Les données secondaires ne suffisent pas pour un mandat de consultation. Investissez dans la collecte de données primaires (sondages, entrevues) — elles sont votre preuve la plus convaincante face au mandataire.</div>
+    </div>
+    <div class="learning-card reveal reveal-delay-2">
+      <div class="learning-icon">🎯</div>
+      <div class="learning-title">Cadrer avant de chercher</div>
+      <div class="learning-body">Définissez votre mission avec précision avant de plonger dans la recherche. Sans cadrage clair, on se noie dans la masse de données disponibles et on perd le fil conducteur du projet.</div>
+    </div>
+    <div class="learning-card reveal reveal-delay-3">
+      <div class="learning-icon">⚖️</div>
+      <div class="learning-title">Anticiper le cadre légal</div>
+      <div class="learning-body">Les NDAs et contraintes légales façonnent tout le projet. Identifiez-les dès le départ pour adapter votre méthodologie de collecte de données et éviter les impasses en cours de route.</div>
+    </div>
+    <div class="learning-card reveal reveal-delay-4">
+      <div class="learning-icon">🧩</div>
+      <div class="learning-title">Cohérence > Exhaustivité</div>
+      <div class="learning-body">Mieux vaut un travail cohérent et bien structuré qu'un travail exhaustif mais décousu. Assurez-vous que chaque section nourrit la suivante — votre crédibilité en dépend.</div>
+    </div>
+    <div class="learning-card reveal reveal-delay-5">
+      <div class="learning-icon">🤝</div>
+      <div class="learning-title">Accès aux données internes</div>
+      <div class="learning-body">Négociez l'accès aux données internes dès le début du mandat. Clarifiez ce qui est partageable, ce qui ne l'est pas, et documentez les limites. Cela évite frustrations et pertes de temps.</div>
+    </div>
+  </div>
+</section>
+
+<!-- RECOMMANDATIONS D2C -->
+<section class="reco-section" id="recos">
+  <div class="section-header" style="text-align:center;">
+    <div class="section-number reveal">05</div>
+    <div class="section-label reveal reveal-delay-1">Stratégie D2C</div>
+    <h2 class="section-title reveal reveal-delay-2">Nos recommandations</h2>
+    <p class="section-body reveal reveal-delay-3" style="max-width: 600px; text-align:center;">Quatre piliers pour optimiser un canal D2C dans un environnement dermo-cosmétique premium.</p>
+  </div>
+  <div class="reco-grid">
+    <div class="reco-card reveal">
+      <div class="reco-icon">✦</div>
+      <div class="reco-title">Expérience utilisateur</div>
+      <div class="reco-body">Simplifier la navigation, clarifier les pages produits. L'objectif : un parcours d'achat aussi fluide que la routine skincare elle-même.</div>
+    </div>
+    <div class="reco-card reveal reveal-delay-1">
+      <div class="reco-icon">◎</div>
+      <div class="reco-title">Personnalisation</div>
+      <div class="reco-body">Recommandations ciblées et personnalisées. Intégration d'outils IA pour accompagner le client dans son choix — du diagnostic peau au produit adapté.</div>
+    </div>
+    <div class="reco-card reveal reveal-delay-2">
+      <div class="reco-icon">◈</div>
+      <div class="reco-title">Contenu éducatif</div>
+      <div class="reco-body">Vulgarisation scientifique et validation par des experts. Transformer le contenu en levier de confiance — le pont entre la science et le consommateur.</div>
+    </div>
+    <div class="reco-card reveal reveal-delay-3">
+      <div class="reco-icon">♢</div>
+      <div class="reco-title">Relation client</div>
+      <div class="reco-body">Stratégie CRM et programme de fidélisation pensés pour une marque premium. Construire une relation durable, au-delà de la transaction.</div>
+    </div>
+  </div>
+</section>
+
+<!-- GUIDE PLAYBOOK -->
+<section class="playbook-section" id="guide">
+  <div class="section-header" style="text-align:center;">
+    <div class="section-number reveal">06</div>
+    <div class="section-label reveal reveal-delay-1">Pour les prochaines cohortes</div>
+    <h2 class="section-title reveal reveal-delay-2">Guide pratique</h2>
+    <p class="section-body reveal reveal-delay-3" style="max-width: 600px; text-align:center;">Vous démarrez un projet de consultation avec une entreprise ? Voici les étapes clés pour maximiser vos chances de succès.</p>
+  </div>
+  <div class="playbook-steps">
+    <div class="step-card reveal">
+      <div class="step-num">01</div>
+      <div class="step-title">Cadrer le mandat</div>
+      <div class="step-body">Avant toute recherche, alignez-vous avec le mandataire sur une mission précise. Documentez les livrables attendus, les limites de votre intervention, et les indicateurs de succès.</div>
+      <div class="step-tip"><strong>Tip :</strong> Formulez votre problématique en une seule question claire. Si elle dépasse deux lignes, c'est trop large.</div>
+    </div>
+    <div class="step-card reveal reveal-delay-1">
+      <div class="step-num">02</div>
+      <div class="step-title">Sécuriser l'accès aux données</div>
+      <div class="step-body">Identifiez très tôt quelles données internes sont accessibles, sous quelles conditions, et les contraintes de confidentialité. Adaptez votre plan de recherche en conséquence.</div>
+      <div class="step-tip"><strong>Tip :</strong> Préparez une liste de données souhaitées pour votre première rencontre. Ce qui n'est pas demandé au jour 1 sera difficile à obtenir au jour 30.</div>
+    </div>
+    <div class="step-card reveal reveal-delay-2">
+      <div class="step-num">03</div>
+      <div class="step-title">Collecter des données primaires</div>
+      <div class="step-body">Ne vous reposez pas uniquement sur les données secondaires. Construisez vos propres outils de collecte : questionnaires experts, sondages consommateurs, entrevues terrain.</div>
+      <div class="step-tip"><strong>Tip :</strong> Visez 3-5 experts minimum. Prévoyez un guide d'entrevue semi-structuré pour des insights riches tout en restant focus.</div>
+    </div>
+    <div class="step-card reveal reveal-delay-3">
+      <div class="step-num">04</div>
+      <div class="step-title">Filtrer et prioriser</div>
+      <div class="step-body">Face à la masse de données et d'insights, apprenez à trier. Gardez uniquement ce qui nourrit directement votre problématique et vos recommandations.</div>
+      <div class="step-tip"><strong>Tip :</strong> Demandez-vous : « Est-ce que cette donnée change une de mes recommandations ? » Si non, elle est secondaire.</div>
+    </div>
+    <div class="step-card reveal reveal-delay-4">
+      <div class="step-num">05</div>
+      <div class="step-title">Justifier chaque recommandation</div>
+      <div class="step-body">Chaque proposition doit être appuyée par une preuve — donnée chiffrée, citation d'expert, benchmark concurrentiel. C'est ce qui transforme une opinion en recommandation stratégique.</div>
+      <div class="step-tip"><strong>Tip :</strong> Structurez en : constat → preuve → recommandation → impact attendu.</div>
+    </div>
+    <div class="step-card reveal reveal-delay-5">
+      <div class="step-num">06</div>
+      <div class="step-title">Maintenir la cohérence</div>
+      <div class="step-body">Relisez votre travail comme un tout. Votre analyse doit mener naturellement à vos recommandations, qui doivent se refléter dans votre plan financier. Chaque section est un maillon de la chaîne.</div>
+      <div class="step-tip"><strong>Tip :</strong> Faites relire par quelqu'un d'extérieur au projet. Si cette personne ne voit pas le fil rouge, retravaillez la structure.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<section class="footer-section">
+  <h2 class="section-title reveal" style="font-style: italic;">Bonne consultation.</h2>
+  <p class="reveal reveal-delay-1">Ce playbook a été conçu pour accompagner les prochaines cohortes dans leurs projets de consultation stratégique avec des entreprises.</p>
+  <div class="footer-credits reveal reveal-delay-2">
+    Angélik Caron · Arthur Joalland · Camille René · Alexie-Emmanuelle Wolf<br>
+    UQAM — Projet de fin d'études
+  </div>
+</section>
+
+<script>
+// Nav scroll effect
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// Intersection Observer for reveal animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
